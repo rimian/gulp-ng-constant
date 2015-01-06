@@ -11,12 +11,14 @@ var TEMPLATE_PATH = path.join(__dirname, 'tpls', 'constant.tpl.ejs');
 var DEFAULT_WRAP_PATH = path.join(__dirname, 'tpls', 'default-wrapper.tpl.ejs');
 var AMD_WRAP_PATH = path.join(__dirname, 'tpls', 'amd-wrapper.tpl.ejs');
 var COMMONJS_WRAP_PATH = path.join(__dirname, 'tpls', 'commonjs-wrapper.tpl.ejs');
+var STRICT_WRAP_PATH = path.join(__dirname, 'tpls', 'strict-wrapper.tpl.ejs');
 var defaultWrapper, amdWrapper, commonjsWrapper;
 
 var defaults = {
     space: '\t',
     deps: null,
     wrap: false,
+    strict: false,
     template: undefined,
     templatePath: TEMPLATE_PATH
 };
@@ -51,6 +53,9 @@ function ngConstantPlugin(opts) {
             // Handle wrapping
             if (!options.wrap) { options.wrap = data.wrap; }
             result = wrap(result, options);
+
+            // handle strict mode
+            result = strict(result, options);
 
             file.path = getFilePath(file.path, options);
             file.contents = new Buffer(result);
@@ -107,6 +112,10 @@ function wrap(input, options) {
         wrapper = commonjsWrapper;
     }
     return _.template(wrapper, _.merge({ '__ngModule': input }, options));
+}
+
+function strict(input, options) {
+    return _.template(readFile(STRICT_WRAP_PATH), _.merge({ '__ngModule': input }, options));
 }
 
 function readFile(filepath) {
