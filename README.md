@@ -113,8 +113,10 @@ The path where the generated constant module should be saved.
 Type: `boolean`  
 Default: `false`  
 
-A boolean to define the config as strict mode. See:
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
+A boolean to define the config as
+[strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
+which places your config in the strict operating context should it be required for your project.
+
 
 #### options.constants
 
